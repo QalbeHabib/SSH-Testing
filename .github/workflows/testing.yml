@@ -45,6 +45,8 @@ jobs:
         run: |
             ls -la
             pwd
+            cd 
+            cd testing/gempad-Interface
             pnpm install
             pnpm run build
 
