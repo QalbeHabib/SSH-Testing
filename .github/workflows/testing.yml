@@ -40,11 +40,11 @@ jobs:
 
             # Clone the Git repo using SSH
             git clone ${{ secrets.APP_INTERFACE }}
-            cd gempad-interface
             ls -la
 
       - name: Building Application
         run: |
+            cd testing/gempad-Interface
             pnpm install
             pnpm run build
 
