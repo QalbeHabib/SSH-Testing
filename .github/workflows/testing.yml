@@ -44,7 +44,6 @@ jobs:
 
       - name: Building Application
         run: |
-            cd testing/gempad-Interface
             pnpm install
             pnpm run build
 
