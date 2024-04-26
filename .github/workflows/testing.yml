@@ -26,7 +26,7 @@ jobs:
 
             # Start SSH agent and add SSH key
             eval "$(ssh-agent -s)"
-            ssh-add ~/.ssh/id_ed25519 <<< "${{ secrets.SSH_PASSPHRASE }}"
+            ssh-add ~/.ssh/id_root <<< "${{ secrets.SSH_PASSPHRASE }}"
 
             # Clone the Git repo using SSH
             git clone ${{ secrets.APP_INTERFACE }}
