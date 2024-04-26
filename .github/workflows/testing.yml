@@ -26,17 +26,7 @@ jobs:
 
             # Start SSH agent and add SSH key
             eval "$(ssh-agent -s)"
-            expect <<EOF
-            spawn ssh-add ~/.ssh/id_ed25519
-            expect "Enter passphrase for /root/.ssh/id_ed25519:"
-            send "${{ secrets.SSH_PASSPHRASE }}\n"
-            expect eof
-            EOF
+            ssh-add ~/.ssh/id_ed25519 <<< "${{ secrets.SSH_PASSPHRASE }}"
 
             # Clone the Git repo using SSH
-            expect <<EOF
-            spawn git clone ${{ secrets.APP_INTERFACE }}
-            expect "Enter passphrase for key '/root/.ssh/id_ed25519':"
-            send "${{ secrets.SSH_PASSPHRASE }}\n"
-            expect eof
-            EOF
+            git clone ${{ secrets.APP_INTERFACE }}
