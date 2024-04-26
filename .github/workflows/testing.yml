@@ -6,14 +6,24 @@ on:
       - main
 
 jobs:
-  connect-and-list-files:
+  Deploying-Application:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
 
-      - name: Connect to server and list files
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install Typescript
+        run: npm install -g typescript
+
+      - name: Connect to server
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST }}
@@ -30,3 +40,20 @@ jobs:
 
             # Clone the Git repo using SSH
             git clone ${{ secrets.APP_INTERFACE }}
+            cd gempad-interface
+            ls -la
+
+      - name: Building Application
+        run: |
+            pnpm install
+            pnpm run build
+
+      - name: Pull Vercel Environment Information
+        run: pnpm vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Build Project Artifacts
+        run: pnpm vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Deploy Project Artifacts to Vercel
+        run: pnpm vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+
+
+            
