@@ -24,11 +24,15 @@ jobs:
             cd testing/
             ls
 
-            # Clone the Git repo using SSH
-            # Pass the SSH passphrase if prompted
-            expect <<EOF
-            spawn git clone ${{secrets.APP_INTERFACE}}
-            expect "Enter passphrase for key '/root/.ssh/id_ed25519':" 
-            send "${{ secrets.SSH_PASSPHRASE }}\n"
-            expect eof
-            EOF
+            eval $(ssh-agent -s)
+            ssh-add ~/.ssh/id_ed25519 <<< ${{secrets.SSH_PASSPHRASE}}
+            git clone ${{secrets.APP_INTERFACE}}
+            
+            # # Clone the Git repo using SSH
+            # # Pass the SSH passphrase if prompted
+            # expect <<EOF
+            # spawn git clone ${{secrets.APP_INTERFACE}}
+            # expect "Enter passphrase for key '/root/.ssh/id_ed25519':" 
+            # send "${{ secrets.SSH_PASSPHRASE }}\n"
+            # expect eof
+            # EOF
