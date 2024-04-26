@@ -31,7 +31,8 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           script: |
             ls -la
-            cd testing/
+            cd ~/testing/gempad-Interface
+            rm -rf gempad-Interface
             ls
 
             # Start SSH agent and add SSH key
@@ -41,21 +42,25 @@ jobs:
             # Clone the Git repo using SSH
             git clone ${{ secrets.APP_INTERFACE }}
 
-      - name: Building Application
+      - name: Install project dependencies
         run: |
-            ls -la
-            pwd
-            cd 
-            cd testing/gempad-Interface
-            pnpm install
-            pnpm run build
+          cd ~/testing/gempad-Interface  # Navigate to the correct directory
+          pnpm install
+
+      - name: Build Application
+        run: |
+          cd ~/testing/gempad-Interface  # Navigate to the correct directory
+          pnpm run build
 
       - name: Pull Vercel Environment Information
         run: pnpm vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+
       - name: Build Project Artifacts
         run: pnpm vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+
       - name: Deploy Project Artifacts to Vercel
         run: pnpm vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+      
 
 
             
