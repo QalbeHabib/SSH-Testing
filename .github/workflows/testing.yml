@@ -23,7 +23,12 @@ jobs:
             ls -la
             cd testing/
             ls
-            # eval "$(ssh-agent)"
-            # ssh-add ~/.ssh/id_root
 
-            git clone https://github.com/Netixsol/gempad-Interface.git
+            # Clone the Git repo using SSH
+            # Pass the SSH passphrase if prompted
+            expect <<EOF
+            spawn git clone ${{secrets.APP_INTERFACE}}
+            expect "Enter passphrase for key '/root/.ssh/id_ed25519':" 
+            send "${{ secrets.SSH_PASSPHRASE }}\n"
+            expect eof
+            EOF
