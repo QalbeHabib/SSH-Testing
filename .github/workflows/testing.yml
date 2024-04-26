@@ -40,10 +40,11 @@ jobs:
 
             # Clone the Git repo using SSH
             git clone ${{ secrets.APP_INTERFACE }}
-            ls -la
 
       - name: Building Application
         run: |
+            ls -la
+            pwd
             pnpm install
             pnpm run build
 
